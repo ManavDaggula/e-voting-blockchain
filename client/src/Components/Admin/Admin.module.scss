@@ -1,0 +1,29 @@
+.adminPage{
+    margin: 1rem;
+    .electionControlWrapper{
+        margin: 1rem;
+        display: flex;
+        justify-content: space-around;
+        button{
+            padding: 1rem 1rem;
+            border: 0px solid transparent;
+            &:first-child{
+                background-color: green;
+            }
+            &:last-child{
+                background-color: red;
+            }
+        }
+    }
+    .candidateAdder{
+        display: grid;
+        gap: 1rem;
+        text-align: center;
+        input{
+
+        }
+        *{
+            padding: 0.5rem;
+        }
+    }
+}

@@ -1,5 +1,4 @@
 import {Link} from "react-router-dom"
-import Admin from "./Admin"
 export default function Home(){
     return(
 <>
