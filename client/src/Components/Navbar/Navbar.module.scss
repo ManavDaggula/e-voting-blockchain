@@ -10,8 +10,8 @@
         list-style-type: none;
         display: flex;
         gap: 1rem;
-        // :hover{
-        //     color:blue;
+        // li{
+        //     padding: 1rem;
         // }
     }
     a{
@@ -23,13 +23,17 @@
         width: 1rem;
         height: 1rem;
         display: inline-block;
+        background-color: var(--status-color);
+        box-shadow: 0px 0px 2px 4px var(--status-color);
+        transition: background-color 0.6s ease;
+        // transition: box-shadow 0.6s ease;
     }
-    .red{
-        background-color: red;
-        box-shadow: 0px 0px 2px 4px red;
-    }
-    .green{
-        background-color: green;
-        box-shadow: 0px 0px 2px 4px green;
-    }
+    // .red{
+    //     background-color: red;
+    //     box-shadow: 0px 0px 2px 4px red;
+    // }
+    // .green{
+    //     background-color: green;
+    //     box-shadow: 0px 0px 2px 4px green;
+    // }
 }
