@@ -1,6 +1,4 @@
 import { useEffect, useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
 import "react-router-dom"
 import './App.css'
 import Voter from './Components/Voter/Voter'
@@ -11,6 +9,7 @@ import Ballot from "./contracts/Ballot.json"
 
 import Web3 from 'web3';
 import Navbar from './Components/Navbar/Navbar'
+import { getAccount, init } from './Web3Helper/Web3Helper'
 
 function App() {
 
@@ -56,11 +55,10 @@ function App() {
 
   // }
 
-  // useEffect(()=>{
-  //   (async ()=>{
-  //     await connectWeb3();
-  //   })();
-  // },[])
+  useEffect(()=>{
+    init();
+    // console.log(getAccount())
+  },[])
 
   return (
     <>
