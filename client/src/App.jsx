@@ -3,18 +3,20 @@ import "react-router-dom"
 import './App.css'
 import Voter from './Components/Voter/Voter'
 import Admin from './Components/Admin/Admin'
-import Home from './Components/Home'
+import Home from './Components/Home/Home'
 import { BrowserRouter, Routes, Route} from 'react-router-dom'
 import Ballot from "./contracts/Ballot.json"
 
 import Web3 from 'web3';
 import Navbar from './Components/Navbar/Navbar'
-import { getAccount, init } from './Web3Helper/Web3Helper'
+import { getAccount, init, getIsChairperson, getCandidates, getElectionStatus } from './Web3Helper/Web3Helper'
 
 function App() {
 
   // const [account, setAccount] = useState(null);
+  const [isChairperson, setIsChairperson] = useState(false);
   const [electionStatus, setElectionStatus] = useState(false);
+  const [candidates, setCandidates] = useState([]);
 
   // async function connectWeb3(){
   //   let provider = window.ethereum;
@@ -56,8 +58,18 @@ function App() {
   // }
 
   useEffect(()=>{
-    init();
-    // console.log(getAccount())
+    (async () =>{
+      await init(setIsChairperson);
+      setIsChairperson(await getIsChairperson());
+      setElectionStatus(await getElectionStatus());
+      let c = await getCandidates();
+      c = c.map(candidate=>{
+        return {name: candidate.name, voteCount: candidate.voteCount}
+      })
+      setCandidates(c);
+      // console.log(await getCandidates())
+      // console.log(getAccount())
+    })()
   },[])
 
   return (
@@ -65,12 +77,11 @@ function App() {
     {/* <p>{electionStatus ? "Election is currently running" : "Election is currently stopped"}</p> */}
       
       <BrowserRouter>
-      <Navbar electionStatus={electionStatus}/>
+      <Navbar electionStatus={electionStatus} isChairperson={isChairperson}/>
         <Routes>
-          {/* <Route path="/" element={<Home/>} /> */}
-          <Route path='/' element={<p>Hi</p>} />
-          <Route path="/Admin" element={<Admin/>} />
-          <Route path="/Voter" element={<Voter/>} />
+          <Route path='/' element={<Home />} />
+          <Route path="/Admin" element={<Admin isChairperson={isChairperson}/>} />
+          <Route path="/Voter" element={<Voter candidates={candidates} electionStatus={electionStatus}/>} />
 
         </Routes>
       
