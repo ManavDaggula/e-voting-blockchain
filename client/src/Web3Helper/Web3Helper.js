@@ -83,3 +83,11 @@ export async function getElectionStatus(){
     let stat = await ballot.methods.isElectionRunning().call({from: selectedAccount})
     return stat;
 }
+
+export async function addCandidate(name){
+    if (!initialised) {
+        init();
+    }
+    let res = await ballot.methods.addCandidate(name).send({from: selectedAccount});
+    console.log(res);
+}
