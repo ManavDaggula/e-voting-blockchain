@@ -24,6 +24,10 @@ contract Ballot{
     function stopElection() public isChairperson checkRunningElection{
         isElectionRunning = false;
     }
+
+    function checkIfChairperson() public view returns(bool){
+        return chairperson==msg.sender;
+    }
     
 
     // below candidate data and functions
@@ -55,6 +59,11 @@ contract Ballot{
         Candidate memory c = Candidate({name: _name, voteCount: 0});
         candidates.push(c);
         candidateBoolMap[_name] = true;
+    }
+
+    //function to get candidates array length i.e. number of candidates
+    function getCandidateLength() public view returns(uint){
+        return candidates.length;
     }
 
     // function increaseVote(uint _index) public indexInCandidatesBound(_index){
