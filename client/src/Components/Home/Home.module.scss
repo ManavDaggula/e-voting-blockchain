@@ -1,0 +1,16 @@
+.home{
+    display: grid;
+    margin: 1rem;
+    gap: 2rem;
+    place-items: center;
+    a{
+        background-color: yellowgreen;
+        padding: 1rem 2rem;
+        text-decoration: none;
+        color: inherit;
+        transition: background-color 0.6s ease;
+        &:hover{
+            background-color: blue;
+        }
+    }
+}
