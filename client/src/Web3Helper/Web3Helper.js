@@ -91,3 +91,11 @@ export async function addCandidate(name){
     let res = await ballot.methods.addCandidate(name).send({from: selectedAccount});
     console.log(res);
 }
+
+export async function vote(aadhaar, index){
+    if (!initialised) {
+        init();
+    }
+    let res = await ballot.methods.registerVote(aadhaar, index).send({from: selectedAccount});
+    return res;
+}
