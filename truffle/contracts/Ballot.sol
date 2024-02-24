@@ -19,10 +19,12 @@ contract Ballot{
     }
     function startElection() public isChairperson checkStoppedElection{
         isElectionRunning = true;
+        emit ElectionStarted();
     }
 
     function stopElection() public isChairperson checkRunningElection{
         isElectionRunning = false;
+        emit ElectionEnded();
     }
 
     function checkIfChairperson() public view returns(bool){
@@ -111,5 +113,8 @@ contract Ballot{
     constructor(){
         chairperson = msg.sender;
     }
+
+    event ElectionStarted();
+    event ElectionEnded();
     
 }
