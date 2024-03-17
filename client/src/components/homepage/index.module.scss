@@ -1,0 +1,62 @@
+.welcomeDiv {
+    display: grid;
+    grid-template-columns: 4fr 3fr;
+    // height: 100%;
+    min-height: 100dvh;
+
+    .left {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 20%;
+        align-items: center;
+        font-size: 1.2em;
+
+        h1,
+        p {
+            text-align: center;
+        }
+
+        p {
+            animation: letterSpacingAnimator 1s ease;
+        }
+
+        @keyframes letterSpacingAnimator {
+            from {
+                letter-spacing: 0.5em;
+            }
+
+            to {
+                letter-spacing: 0em;
+            }
+        }
+
+        button {
+            padding: 0.4em;
+            font-size: 1em;
+            border-radius: 10px;
+            border: unset;
+            background-color: var(--colour-secondary);
+            color: var(--colour-background);
+            font-family: inherit;
+
+            &:hover,
+            &:focus,
+            &:focus-visible {
+                box-shadow: 0px 0px 10px 6px var(--colour-accent);
+            }
+        }
+    }
+
+    .right {
+        background-color: var(--colour-secondary);
+        display: grid;
+        place-items: center;
+
+        img {
+            width: min(calc(80%), 768px);
+            height: 80%;
+            object-fit: contain;
+        }
+    }
+}
