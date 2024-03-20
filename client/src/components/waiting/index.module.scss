@@ -1,0 +1,42 @@
+.waitingPage {
+    display: grid;
+    min-height: 100dvh;
+    place-items: center;
+
+    img {
+        animation: imageHover 1s ease-in-out infinite alternate;
+        width: 50%;
+        height: 50%;
+        object-fit: contain;
+    }
+
+    @keyframes imageHover {
+        0% {
+            transform: translateY(-10px);
+        }
+
+        // 20% {
+        //     transform: translateY(-8px);
+        // }
+
+        // 25% {
+        //     transform: translateY(-10px);
+        // }
+
+        // 30% {
+        //     transform: translateY(-8px);
+        // }
+
+        // 50% {
+        //     transform: translateY(0px);
+        // }
+
+        // 75% {
+        //     transform: translateY(10px);
+        // }
+
+        100% {
+            transform: translateY(10px);
+        }
+    }
+}

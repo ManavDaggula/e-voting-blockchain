@@ -1,0 +1,27 @@
+.resultDiv {
+    min-height: 100dvh;
+    display: grid;
+    place-items: center;
+    margin: 1em;
+
+    table {
+        display: grid;
+        width: 90%;
+        padding: 0.4em;
+        background-color: var(--colour-primary);
+        color: rgb(100, 100, 100);
+        margin: 1em;
+        border-radius: 10px;
+
+        tr {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+
+            th,
+            td {
+                text-align: center;
+                padding: 0.4em;
+            }
+        }
+    }
+}

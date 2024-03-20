@@ -1,0 +1,53 @@
+.voteDiv {
+    min-height: 100dvh;
+    display: grid;
+    place-items: center;
+    margin: 1em;
+
+    table {
+        display: grid;
+        width: 90%;
+        padding: 0.4em;
+        background-color: var(--colour-primary);
+        color: rgb(100, 100, 100);
+        margin: 1em;
+        border-radius: 10px;
+
+        tr {
+            display: grid;
+            grid-template-columns: 1fr 1fr 1fr;
+
+            th,
+            td {
+                text-align: center;
+                padding: 0.4em;
+            }
+        }
+
+        tbody tr:hover {
+            background-color: var(--colour-background);
+            color: white;
+        }
+    }
+
+    button {
+        padding: 0.5em;
+        font-size: 1em;
+        border-radius: 10px;
+        border: unset;
+        background-color: var(--colour-secondary);
+        color: var(--colour-background);
+        font-family: inherit;
+        transition: box-shadow 0.4s ease, opacity 0.2s linear;
+
+        &:hover,
+        &:focus,
+        &:focus-visible {
+            box-shadow: 0px 0px 10px 6px var(--colour-accent);
+        }
+
+        &:disabled {
+            opacity: 0.5;
+        }
+    }
+}
