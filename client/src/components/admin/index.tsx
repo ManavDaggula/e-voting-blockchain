@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Web3, { Contract, ContractAbi } from "web3";
 import Poll from "./../../contracts/ElectoralPoll.json";
 import AddCandidates from "./addCandidates";
+import DisplayCandidates from "./displayCandidates";
 
 export default function Admin({
   committeeContract,
@@ -11,7 +12,7 @@ export default function Admin({
   accountAddress: String;
 }) {
   const [electionCount, setElectionCount] = useState(0n);
-  const [currentStatus, setCurrentStatus] = useState<String>();
+  const [currentStatus, setCurrentStatus] = useState<String>("");
   const [pollContract, setPollContract] = useState<Contract<ContractAbi>>();
   let web3 = new Web3(window.ethereum);
 
@@ -33,12 +34,12 @@ export default function Admin({
         .getCountOfElections()
         .call({ from: accountAddress.valueOf() });
       setElectionCount(x);
-      console.log(x);
+      // console.log(x);
       if (x && x !== 0n) {
         let p = await committeeContract?.methods
           .getLatestElection()
           .call({ from: accountAddress.valueOf() });
-        console.log(p, typeof p);
+        // console.log(p, typeof p);
         let pCon = new web3.eth.Contract(Poll.abi, p);
         setPollContract(pCon);
         let s: BigInt = await pCon.methods
@@ -59,14 +60,33 @@ export default function Admin({
     <>
       {/* <p>Welcome Admin</p> */}
       {electionCount === 0n && (
-        <>
+        <div
+          style={{
+            placeSelf: "center",
+            display: "flex",
+            flexDirection: "column",
+            gap: "2em",
+          }}
+        >
           <p>No Elections yet by the committee.</p>
           <button onClick={newElection}>Create New Election</button>
-        </>
+        </div>
       )}
       {electionCount !== 0n && currentStatus === "PENDING" && (
         <>
-          <AddCandidates />
+          <AddCandidates
+            pollContract={pollContract}
+            accountAddress={accountAddress}
+            setCurrentStatus={setCurrentStatus}
+          />
+        </>
+      )}
+      {currentStatus === "RUNNING" && (
+        <>
+          <DisplayCandidates
+            accountAddress={accountAddress}
+            pollContract={pollContract}
+          />
         </>
       )}
     </>
