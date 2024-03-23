@@ -41,10 +41,10 @@
  * https://trufflesuite.com/docs/truffle/getting-started/using-the-truffle-dashboard/
  */
 
-const dotenv = require('dotenv')
+const dotenv = require("dotenv");
 dotenv.config();
 
-const HDWalletProvider = require('@truffle/hdwallet-provider');
+const HDWalletProvider = require("@truffle/hdwallet-provider");
 
 module.exports = {
   /**
@@ -66,9 +66,11 @@ module.exports = {
     // options below to some value.
     //
     development: {
-     host: "127.0.0.1",     // Localhost (default: none)
-     port: 7545,            // Standard Ethereum port (default: none)
-     network_id: "*",       // Any network (default: none)
+      // host: "127.0.0.1", // Localhost (default: none)
+      // port: 7545, // Standard Ethereum port (default: none)
+      url: "ws://127.0.0.1:7545",
+      network_id: "*", // Any network (default: none)
+      websockets: true,
     },
     //
     // An additional network, but with some advanced options…
@@ -91,9 +93,13 @@ module.exports = {
     //   skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
     // },
     sepolia: {
-      provider : () => new HDWalletProvider(`${process.env.MNEMONIC}`,`${process.env.ALCHEMY_URL}`),
+      provider: () =>
+        new HDWalletProvider(
+          `${process.env.MNEMONIC}`,
+          `${process.env.ALCHEMY_URL}`
+        ),
       network_id: 11155111,
-    }
+    },
     //
     // Useful for private networks
     // private: {
@@ -111,7 +117,7 @@ module.exports = {
   // Configure your compilers
   compilers: {
     solc: {
-      version: "0.8.18",      // Fetch exact version from solc-bin (default: truffle's version)
+      version: "0.8.18", // Fetch exact version from solc-bin (default: truffle's version)
       // docker: true,        // Use "0.5.1" you've installed locally with docker (default: false)
       // settings: {          // See the solidity docs for advice about optimization and evmVersion
       //  optimizer: {
@@ -120,7 +126,7 @@ module.exports = {
       //  },
       //  evmVersion: "byzantium"
       // }
-    }
+    },
   },
 
   // Truffle DB is currently disabled by default; to enable it, change enabled:
@@ -144,4 +150,3 @@ module.exports = {
   //   }
   // }
 };
-  

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Contract, ContractAbi } from "web3";
+import style from "./index.module.scss";
 
 interface Cands {
   name: string;
@@ -20,6 +21,14 @@ export default function AddCandidates({
   // const [currentStatus, setCurrentStatus] = useState("");
 
   async function addCandidate() {
+    if (newCandidate === "") {
+      window.alert("Please enter name for new candidate.");
+      return;
+    }
+    if (!/^[A-Z ]+$/.test(newCandidate)) {
+      window.alert("Please enter alphabetic name.");
+      return;
+    }
     await pollContract.methods
       .addCandidate(newCandidate)
       .send({ from: accountAddress.valueOf() });
@@ -65,11 +74,20 @@ export default function AddCandidates({
       // } else if (s === 2n) {
       //   setCurrentStatus("FINISHED");
       // }
+      // pollContract.events["NewCandidate"]().on("connected", (id) => {
+      //   console.log(id);
+      // });
+      // pollContract.events["NewCandidate"]().on("data", (e) => {
+      //   console.log("Event:", e);
+      // });
+      // pollContract.events["NewCandidate"]().on("error", (err) => {
+      //   console.error(err);
+      // });
     })();
   }, [pollContract]);
 
   return (
-    <>
+    <div className={style.addCandidate}>
       {candidates.length == 0 && <p>No Candidates Yet</p>}
       {candidates.length > 0 && (
         <table>
@@ -89,7 +107,7 @@ export default function AddCandidates({
           </tbody>
         </table>
       )}
-      <div>
+      <div className={style.form}>
         <input
           type="text"
           placeholder="Enter candidate name.."
@@ -101,6 +119,6 @@ export default function AddCandidates({
       {candidates.length > 0 && (
         <button onClick={startElection}>Start Election</button>
       )}
-    </>
+    </div>
   );
 }

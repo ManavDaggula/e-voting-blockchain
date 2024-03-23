@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import firstImage from "../../assets/4687760-removebg-preview 1.png";
 import styles from "./index.module.scss";
 import Web3 from "web3";
@@ -28,6 +28,10 @@ export default function Homepage({
       setAccountAddress(accounts[0]);
     });
   }
+
+  useEffect(() => {
+    connectWallet();
+  }, []);
 
   return (
     <div className={styles.welcomeDiv}>

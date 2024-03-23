@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Web3, { Contract, ContractAbi } from "web3";
 import EventContract from "./../../../contracts/EventEmitter.json";
+import style from "./index.module.scss";
 
 interface Cands {
   name: string;
@@ -10,22 +11,33 @@ interface Cands {
 export default function DisplayCandidates({
   pollContract,
   accountAddress,
+  setCurrentStatus,
+  live,
 }: {
-  pollContract: Contract<ContractAbi>;
+  pollContract: Contract<ContractAbi> | null;
   accountAddress: String;
+  setCurrentStatus: React.Dispatch<React.SetStateAction<String>>;
+  live: boolean;
 }) {
   const [candidates, setCandidates] = useState<Cands[]>([]);
 
+  async function stopElection() {
+    await pollContract.methods
+      .stopElection()
+      .send({ from: accountAddress.valueOf() });
+    setCurrentStatus("FINISHED");
+  }
+
   useEffect(() => {
     (async () => {
-      let x: bigint = await pollContract.methods
+      let x: bigint | undefined = await pollContract?.methods
         .getCandidatesLength()
         .call({ from: accountAddress.valueOf() });
       console.log(x);
       let cs: Cands[] = [];
-      for (let i = 0n; i < x.valueOf(); i++) {
+      for (let i = 0n; i < x?.valueOf(); i++) {
         // console.log(x, i);
-        let c: Cands = await pollContract.methods
+        let c: Cands = await pollContract?.methods
           .candidates(i)
           .call({ from: accountAddress.valueOf() });
         // console.log(c);
@@ -33,31 +45,25 @@ export default function DisplayCandidates({
       }
       //   console.log(cs);
       setCandidates(cs);
-      let eC = getEventContract();
-      eC.events["NewEvent"]({}, (error, event) => {
-        if (error) {
-          console.error("Error:", error);
-          return;
-        }
-
-        console.log("New event received:");
-        console.log(event.returnValues);
-      });
+      if (live) {
+        pollContract?.events["Voted"]().on("data", (e) => {
+          console.log(e.returnValues);
+          for (let i = 0; i < cs.length; i++) {
+            if (cs[i].name == e.returnValues.name) {
+              cs[i].voteCount = e.returnValues.newCount;
+            }
+          }
+          console.log(cs);
+          setCandidates(cs);
+        });
+      }
     })();
-  }, []);
-
-  function getEventContract() {
-    let web3 = new Web3(window.ethereum);
-    return new web3.eth.Contract(
-      EventContract.abi,
-      "0x6e64b363532968D18C630930C4Cc690EC1469D0A"
-    );
-  }
+  }, [pollContract]);
 
   return (
-    <>
+    <div className={style.displayCandidates}>
       {/* <p>Displaying candidates for running election</p> */}
-      <table>
+      <table className={style.table}>
         <thead>
           <tr>
             <td>Sr. No.</td>
@@ -75,6 +81,8 @@ export default function DisplayCandidates({
           ))}
         </tbody>
       </table>
-    </>
+
+      {live && <button onClick={stopElection}>Stop Election</button>}
+    </div>
   );
 }

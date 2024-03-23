@@ -56,7 +56,7 @@ export default function Voter({ accountAddress }: { accountAddress: String }) {
       setCommitteeContract(comm);
       // getPollContract = (address:String)=>new web3.eth.Contract(ElectoralPoll.abi, address);
     })();
-  }, []);
+  }, [accountAddress]);
 
   useEffect(() => {
     (async () => {

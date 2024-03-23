@@ -12,7 +12,7 @@ export default function Admin({
   accountAddress: String;
 }) {
   const [electionCount, setElectionCount] = useState(0n);
-  const [currentStatus, setCurrentStatus] = useState<String>("");
+  const [currentStatus, setCurrentStatus] = useState<String>("FINISHED");
   const [pollContract, setPollContract] = useState<Contract<ContractAbi>>();
   let web3 = new Web3(window.ethereum);
 
@@ -30,10 +30,12 @@ export default function Admin({
   useEffect(() => {
     (async () => {
       // const web3 = new Web3(window.ethereum);
-      let x: BigInt = await committeeContract?.methods
+      let x: BigInt | undefined = await committeeContract?.methods
         .getCountOfElections()
         .call({ from: accountAddress.valueOf() });
-      setElectionCount(x);
+      if (x) {
+        setElectionCount(x.valueOf());
+      }
       // console.log(x);
       if (x && x !== 0n) {
         let p = await committeeContract?.methods
@@ -59,7 +61,7 @@ export default function Admin({
   return (
     <>
       {/* <p>Welcome Admin</p> */}
-      {electionCount === 0n && (
+      {currentStatus === "FINISHED" && (
         <div
           style={{
             placeSelf: "center",
@@ -68,7 +70,18 @@ export default function Admin({
             gap: "2em",
           }}
         >
-          <p>No Elections yet by the committee.</p>
+          {electionCount === 0n ? (
+            <p>No Elections yet by the committee.</p>
+          ) : (
+            <>
+              <DisplayCandidates
+                accountAddress={accountAddress}
+                pollContract={pollContract}
+                setCurrentStatus={setCurrentStatus}
+                live={false}
+              />
+            </>
+          )}
           <button onClick={newElection}>Create New Election</button>
         </div>
       )}
@@ -86,6 +99,8 @@ export default function Admin({
           <DisplayCandidates
             accountAddress={accountAddress}
             pollContract={pollContract}
+            setCurrentStatus={setCurrentStatus}
+            live={true}
           />
         </>
       )}
