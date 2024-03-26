@@ -95,7 +95,7 @@ module.exports = {
     sepolia: {
       provider: () =>
         new HDWalletProvider(
-          `${process.env.MNEMONIC}`,
+          `${process.env.PRIVATE_KEY}`,
           `${process.env.ALCHEMY_URL}`
         ),
       network_id: 11155111,
